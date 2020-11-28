@@ -2,26 +2,28 @@ package com.example.view_model_demo;
 
 import android.util.Log;
 
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import java.util.Random;
 
 public class ViewModelActivity extends androidx.lifecycle.ViewModel {
     private String TAG = this.getClass().getSimpleName();
-    private String myRandomNumber;
+    private MutableLiveData<String>myRandomNumber;
 
-    public String getNumber(){
+    public MutableLiveData<String> getNumber(){
         Log.i(TAG,"Get Number");
         if (myRandomNumber == null){
+            myRandomNumber = new MutableLiveData<>();
             createNumber();
         }
         return myRandomNumber;
     }
 
-    private void createNumber() {
+    public void createNumber() {
         Log.i(TAG,"Create new number");
         Random random = new Random();
-        myRandomNumber = "Number: " + (random.nextInt(10-1)+1);
+        myRandomNumber.setValue( "Number: " + (random.nextInt(10-1)+1));
     }
 
     @Override

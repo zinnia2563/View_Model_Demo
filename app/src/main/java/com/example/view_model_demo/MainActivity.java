@@ -1,11 +1,14 @@
 package com.example.view_model_demo;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -29,12 +32,22 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         TextView mTextView = findViewById(R.id.number_id);
-        ViewModelActivity myData = new ViewModelActivity();
+        Button mButton = findViewById(R.id.bRandom);
 
         ViewModelActivity model = ViewModelProviders.of(this).get(ViewModelActivity.class);
-
-        String myRandomNumber = model.getNumber();
-        mTextView.setText(myRandomNumber);
+        LiveData<String> myRandomNumber = model.getNumber();
+        myRandomNumber.observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                mTextView.setText(s);
+            }
+        });
+       mButton.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+               model.createNumber();
+           }
+       });
         Log.i(TAG, "Random Number Set");
 
     }
